@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
   (global = global || self, global.prettier = factory());
-}(this, function () { 'use strict';
+}(this, (function () { 'use strict';
 
   var name = "prettier";
   var version = "1.18.2";
@@ -16,15 +16,15 @@
   var license = "MIT";
   var main = "./index.js";
   var engines = {
-  	node: ">=6"
+  	node: ">=8"
   };
   var dependencies = {
   	"@angular/compiler": "8.2.7",
   	"@babel/code-frame": "7.5.5",
-  	"@babel/parser": "7.6.3",
+  	"@babel/parser": "7.6.4",
   	"@glimmer/syntax": "0.41.0",
   	"@iarna/toml": "2.2.3",
-  	"@typescript-eslint/typescript-estree": "fisker/typescript-estree-for-node-6#275bd6448ac005abb087824ed75f4e680e9d904d",
+  	"@typescript-eslint/typescript-estree": "2.6.0",
   	"angular-estree-parser": "1.1.5",
   	"angular-html-parser": "1.2.0",
   	camelcase: "5.3.1",
@@ -41,10 +41,10 @@
   	"find-parent-dir": "0.3.0",
   	"find-project-root": "1.1.1",
   	"flow-parser": "0.89.0",
-  	"get-stream": "4.1.0",
+  	"get-stream": "5.1.0",
   	globby: "6.1.0",
   	graphql: "14.5.8",
-  	"html-element-attributes": "2.1.0",
+  	"html-element-attributes": "2.2.0",
   	"html-styles": "1.0.0",
   	"html-tag-names": "1.1.4",
   	ignore: "4.0.6",
@@ -55,7 +55,7 @@
   	"lines-and-columns": "1.1.6",
   	"linguist-languages": "7.6.0",
   	"lodash.uniqby": "4.7.0",
-  	mem: "4.3.0",
+  	mem: "5.1.1",
   	minimatch: "3.0.4",
   	minimist: "1.2.0",
   	"n-readlines": "1.0.0",
@@ -71,52 +71,52 @@
   	"remark-parse": "5.0.0",
   	resolve: "1.12.0",
   	semver: "6.3.0",
-  	"string-width": "3.1.0",
-  	typescript: "3.7.0-dev.20191017",
+  	"string-width": "4.1.0",
+  	typescript: "3.7.1-rc",
   	"unicode-regex": "3.0.0",
-  	unified: "6.1.6",
+  	unified: "8.4.1",
   	vnopts: "1.0.2",
   	"yaml-unist-parser": "1.1.1"
   };
   var devDependencies = {
   	"@babel/core": "7.6.3",
   	"@babel/preset-env": "7.6.3",
+  	"@rollup/plugin-alias": "2.2.0",
+  	"@rollup/plugin-replace": "2.2.0",
   	"babel-loader": "8.0.6",
   	benchmark: "2.1.4",
   	"builtin-modules": "3.1.0",
   	codecov: "codecov/codecov-node#e427d900309adb50746a39a50aa7d80071a5ddd0",
-  	"cross-env": "5.2.1",
+  	"cross-env": "6.0.3",
   	eslint: "6.5.1",
-  	"eslint-config-prettier": "6.4.0",
+  	"eslint-config-prettier": "6.5.0",
   	"eslint-formatter-friendly": "7.0.0",
   	"eslint-plugin-import": "2.18.2",
   	"eslint-plugin-prettier": "3.1.1",
   	"eslint-plugin-react": "7.14.3",
-  	execa: "1.0.0",
+  	execa: "3.2.0",
   	jest: "23.3.0",
-  	"jest-junit": "8.0.0",
+  	"jest-junit": "9.0.0",
   	"jest-snapshot-serializer-ansi": "1.0.0",
   	"jest-snapshot-serializer-raw": "1.1.0",
-  	"jest-watch-typeahead": "0.3.1",
+  	"jest-watch-typeahead": "0.4.0",
   	mkdirp: "0.5.1",
   	prettier: "1.18.2",
   	prettylint: "1.0.0",
   	rimraf: "3.0.0",
-  	rollup: "1.21.4",
-  	"rollup-plugin-alias": "2.0.1",
+  	rollup: "1.26.0",
   	"rollup-plugin-babel": "4.3.3",
   	"rollup-plugin-commonjs": "10.1.0",
   	"rollup-plugin-json": "4.0.0",
   	"rollup-plugin-node-globals": "1.4.0",
   	"rollup-plugin-node-resolve": "5.2.0",
-  	"rollup-plugin-replace": "2.2.0",
   	"rollup-plugin-terser": "5.1.2",
   	shelljs: "0.8.3",
   	"snapshot-diff": "0.4.0",
   	"strip-ansi": "5.2.0",
   	tempy: "0.2.1",
-  	"terser-webpack-plugin": "1.4.1",
-  	webpack: "4.41.0"
+  	"terser-webpack-plugin": "2.1.3",
+  	webpack: "4.41.2"
   };
   var scripts = {
   	prepublishOnly: "echo \"Error: must publish from dist/\" && exit 1",
@@ -132,7 +132,8 @@
   	"lint-dist": "eslint --no-eslintrc --no-ignore --env=browser \"dist/!(bin-prettier|index|third-party).js\"",
   	build: "node --max-old-space-size=3072 ./scripts/build/build.js",
   	"build-docs": "node ./scripts/build-docs.js",
-  	"check-deps": "node ./scripts/check-deps.js"
+  	"check-deps": "node ./scripts/check-deps.js",
+  	spellcheck: "npx -p cspell@4.0.31 cspell {bin,scripts,src}/**/*.js {docs,website/blog}/**/*.md CHANGELOG.unreleased.md"
   };
   var _package = {
   	name: name,
@@ -151,6 +152,7 @@
   };
 
   var _package$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name,
     version: version,
     description: description,
@@ -1965,6 +1967,7 @@
   }
 
   var index_es6 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     Diff: Diff,
     diffChars: diffChars,
     diffWords: diffWords,
@@ -1990,6 +1993,7 @@
   var _shim_fs = {};
 
   var _shim_fs$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     'default': _shim_fs
   });
 
@@ -6250,18 +6254,20 @@
   var CATEGORY_SPECIAL = "Special";
   /**
    * @typedef {Object} OptionInfo
-   * @property {string} since - available since version
+   * @property {string} [since] - available since version
    * @property {string} category
    * @property {'int' | 'boolean' | 'choice' | 'path'} type
-   * @property {boolean} array - indicate it's an array of the specified type
-   * @property {boolean?} deprecated - deprecated since version
-   * @property {OptionRedirectInfo?} redirect - redirect deprecated option
+   * @property {boolean} [array] - indicate it's an array of the specified type
+   * @property {OptionValueInfo} [default]
+   * @property {OptionRangeInfo} [range] - for type int
    * @property {string} description
-   * @property {string?} oppositeDescription - for `false` option
-   * @property {OptionValueInfo} default
-   * @property {OptionRangeInfo?} range - for type int
-   * @property {OptionChoiceInfo?} choices - for type choice
-   * @property {(value: any) => boolean} exception
+   * @property {string} [deprecated] - deprecated since version
+   * @property {OptionRedirectInfo} [redirect] - redirect deprecated option
+   * @property {(value: any) => boolean} [exception]
+   * @property {OptionChoiceInfo[]} [choices] - for type choice
+   * @property {string} [cliName]
+   * @property {string} [cliCategory]
+   * @property {string} [cliDescription]
    *
    * @typedef {number | boolean | string} OptionValue
    * @typedef {OptionValue | [{ value: OptionValue[] }] | Array<{ since: string, value: OptionValue}>} OptionValueInfo
@@ -6277,17 +6283,13 @@
    *
    * @typedef {Object} OptionChoiceInfo
    * @property {boolean | string} value - boolean for the option that is originally boolean type
-   * @property {string?} description - undefined if redirect
-   * @property {string?} since - undefined if available since the first version of the option
-   * @property {string?} deprecated - deprecated since version
-   * @property {OptionValueInfo?} redirect - redirect deprecated value
-   *
-   * @property {string?} cliName
-   * @property {string?} cliCategory
-   * @property {string?} cliDescription
+   * @property {string} description
+   * @property {string} [since] - undefined if available since the first version of the option
+   * @property {string} [deprecated] - deprecated since version
+   * @property {OptionValueInfo} [redirect] - redirect deprecated value
    */
 
-  /** @type {{ [name: string]: OptionInfo } */
+  /** @type {{ [name: string]: OptionInfo }} */
 
   var options = {
     cursorOffset: {
@@ -7080,6 +7082,7 @@
   }
 
   var tslib_es6 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     __extends: __extends,
     get __assign () { return _assign; },
     __rest: __rest,
@@ -10916,6 +10919,7 @@
   var _shim_path = {};
 
   var _shim_path$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     'default': _shim_path
   });
 
@@ -12463,54 +12467,56 @@
 
   /* eslint-disable yoda */
 
-  var isFullwidthCodePoint = function isFullwidthCodePoint(x) {
-    if (Number.isNaN(x)) {
+  var isFullwidthCodePoint = function isFullwidthCodePoint(codePoint) {
+    if (Number.isNaN(codePoint)) {
       return false;
-    } // code points are derived from:
+    } // Code points are derived from:
     // http://www.unix.org/Public/UNIDATA/EastAsianWidth.txt
 
 
-    if (x >= 0x1100 && (x <= 0x115f || // Hangul Jamo
-    x === 0x2329 || // LEFT-POINTING ANGLE BRACKET
-    x === 0x232a || // RIGHT-POINTING ANGLE BRACKET
+    if (codePoint >= 0x1100 && (codePoint <= 0x115F || // Hangul Jamo
+    codePoint === 0x2329 || // LEFT-POINTING ANGLE BRACKET
+    codePoint === 0x232A || // RIGHT-POINTING ANGLE BRACKET
     // CJK Radicals Supplement .. Enclosed CJK Letters and Months
-    0x2e80 <= x && x <= 0x3247 && x !== 0x303f || // Enclosed CJK Letters and Months .. CJK Unified Ideographs Extension A
-    0x3250 <= x && x <= 0x4dbf || // CJK Unified Ideographs .. Yi Radicals
-    0x4e00 <= x && x <= 0xa4c6 || // Hangul Jamo Extended-A
-    0xa960 <= x && x <= 0xa97c || // Hangul Syllables
-    0xac00 <= x && x <= 0xd7a3 || // CJK Compatibility Ideographs
-    0xf900 <= x && x <= 0xfaff || // Vertical Forms
-    0xfe10 <= x && x <= 0xfe19 || // CJK Compatibility Forms .. Small Form Variants
-    0xfe30 <= x && x <= 0xfe6b || // Halfwidth and Fullwidth Forms
-    0xff01 <= x && x <= 0xff60 || 0xffe0 <= x && x <= 0xffe6 || // Kana Supplement
-    0x1b000 <= x && x <= 0x1b001 || // Enclosed Ideographic Supplement
-    0x1f200 <= x && x <= 0x1f251 || // CJK Unified Ideographs Extension B .. Tertiary Ideographic Plane
-    0x20000 <= x && x <= 0x3fffd)) {
+    0x2E80 <= codePoint && codePoint <= 0x3247 && codePoint !== 0x303F || // Enclosed CJK Letters and Months .. CJK Unified Ideographs Extension A
+    0x3250 <= codePoint && codePoint <= 0x4DBF || // CJK Unified Ideographs .. Yi Radicals
+    0x4E00 <= codePoint && codePoint <= 0xA4C6 || // Hangul Jamo Extended-A
+    0xA960 <= codePoint && codePoint <= 0xA97C || // Hangul Syllables
+    0xAC00 <= codePoint && codePoint <= 0xD7A3 || // CJK Compatibility Ideographs
+    0xF900 <= codePoint && codePoint <= 0xFAFF || // Vertical Forms
+    0xFE10 <= codePoint && codePoint <= 0xFE19 || // CJK Compatibility Forms .. Small Form Variants
+    0xFE30 <= codePoint && codePoint <= 0xFE6B || // Halfwidth and Fullwidth Forms
+    0xFF01 <= codePoint && codePoint <= 0xFF60 || 0xFFE0 <= codePoint && codePoint <= 0xFFE6 || // Kana Supplement
+    0x1B000 <= codePoint && codePoint <= 0x1B001 || // Enclosed Ideographic Supplement
+    0x1F200 <= codePoint && codePoint <= 0x1F251 || // CJK Unified Ideographs Extension B .. Tertiary Ideographic Plane
+    0x20000 <= codePoint && codePoint <= 0x3FFFD)) {
       return true;
     }
 
     return false;
   };
 
+  var isFullwidthCodePoint_1 = isFullwidthCodePoint;
+  var default_1$2 = isFullwidthCodePoint;
+  isFullwidthCodePoint_1.default = default_1$2;
+
   var emojiRegex = function emojiRegex() {
     // https://mths.be/emoji
-    return /\uD83C\uDFF4(?:\uDB40\uDC67\uDB40\uDC62(?:\uDB40\uDC65\uDB40\uDC6E\uDB40\uDC67|\uDB40\uDC77\uDB40\uDC6C\uDB40\uDC73|\uDB40\uDC73\uDB40\uDC63\uDB40\uDC74)\uDB40\uDC7F|\u200D\u2620\uFE0F)|\uD83D\uDC69\u200D\uD83D\uDC69\u200D(?:\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67]))|\uD83D\uDC68(?:\u200D(?:\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83D\uDC68|(?:\uD83D[\uDC68\uDC69])\u200D(?:\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67]))|\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67])|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDB0-\uDDB3])|(?:\uD83C[\uDFFB-\uDFFF])\u200D(?:\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDB0-\uDDB3]))|\uD83D\uDC69\u200D(?:\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D(?:\uD83D[\uDC68\uDC69])|\uD83D[\uDC68\uDC69])|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDB0-\uDDB3])|\uD83D\uDC69\u200D\uD83D\uDC66\u200D\uD83D\uDC66|(?:\uD83D\uDC41\uFE0F\u200D\uD83D\uDDE8|\uD83D\uDC69(?:\uD83C[\uDFFB-\uDFFF])\u200D[\u2695\u2696\u2708]|\uD83D\uDC68(?:(?:\uD83C[\uDFFB-\uDFFF])\u200D[\u2695\u2696\u2708]|\u200D[\u2695\u2696\u2708])|(?:(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)\uFE0F|\uD83D\uDC6F|\uD83E[\uDD3C\uDDDE\uDDDF])\u200D[\u2640\u2642]|(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)(?:\uD83C[\uDFFB-\uDFFF])\u200D[\u2640\u2642]|(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDD6-\uDDDD])(?:(?:\uD83C[\uDFFB-\uDFFF])\u200D[\u2640\u2642]|\u200D[\u2640\u2642])|\uD83D\uDC69\u200D[\u2695\u2696\u2708])\uFE0F|\uD83D\uDC69\u200D\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67])|\uD83D\uDC69\u200D\uD83D\uDC69\u200D(?:\uD83D[\uDC66\uDC67])|\uD83D\uDC68(?:\u200D(?:(?:\uD83D[\uDC68\uDC69])\u200D(?:\uD83D[\uDC66\uDC67])|\uD83D[\uDC66\uDC67])|\uD83C[\uDFFB-\uDFFF])|\uD83C\uDFF3\uFE0F\u200D\uD83C\uDF08|\uD83D\uDC69\u200D\uD83D\uDC67|\uD83D\uDC69(?:\uD83C[\uDFFB-\uDFFF])\u200D(?:\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDB0-\uDDB3])|\uD83D\uDC69\u200D\uD83D\uDC66|\uD83C\uDDF6\uD83C\uDDE6|\uD83C\uDDFD\uD83C\uDDF0|\uD83C\uDDF4\uD83C\uDDF2|\uD83D\uDC69(?:\uD83C[\uDFFB-\uDFFF])|\uD83C\uDDED(?:\uD83C[\uDDF0\uDDF2\uDDF3\uDDF7\uDDF9\uDDFA])|\uD83C\uDDEC(?:\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEE\uDDF1-\uDDF3\uDDF5-\uDDFA\uDDFC\uDDFE])|\uD83C\uDDEA(?:\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDED\uDDF7-\uDDFA])|\uD83C\uDDE8(?:\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDEE\uDDF0-\uDDF5\uDDF7\uDDFA-\uDDFF])|\uD83C\uDDF2(?:\uD83C[\uDDE6\uDDE8-\uDDED\uDDF0-\uDDFF])|\uD83C\uDDF3(?:\uD83C[\uDDE6\uDDE8\uDDEA-\uDDEC\uDDEE\uDDF1\uDDF4\uDDF5\uDDF7\uDDFA\uDDFF])|\uD83C\uDDFC(?:\uD83C[\uDDEB\uDDF8])|\uD83C\uDDFA(?:\uD83C[\uDDE6\uDDEC\uDDF2\uDDF3\uDDF8\uDDFE\uDDFF])|\uD83C\uDDF0(?:\uD83C[\uDDEA\uDDEC-\uDDEE\uDDF2\uDDF3\uDDF5\uDDF7\uDDFC\uDDFE\uDDFF])|\uD83C\uDDEF(?:\uD83C[\uDDEA\uDDF2\uDDF4\uDDF5])|\uD83C\uDDF8(?:\uD83C[\uDDE6-\uDDEA\uDDEC-\uDDF4\uDDF7-\uDDF9\uDDFB\uDDFD-\uDDFF])|\uD83C\uDDEE(?:\uD83C[\uDDE8-\uDDEA\uDDF1-\uDDF4\uDDF6-\uDDF9])|\uD83C\uDDFF(?:\uD83C[\uDDE6\uDDF2\uDDFC])|\uD83C\uDDEB(?:\uD83C[\uDDEE-\uDDF0\uDDF2\uDDF4\uDDF7])|\uD83C\uDDF5(?:\uD83C[\uDDE6\uDDEA-\uDDED\uDDF0-\uDDF3\uDDF7-\uDDF9\uDDFC\uDDFE])|\uD83C\uDDE9(?:\uD83C[\uDDEA\uDDEC\uDDEF\uDDF0\uDDF2\uDDF4\uDDFF])|\uD83C\uDDF9(?:\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDED\uDDEF-\uDDF4\uDDF7\uDDF9\uDDFB\uDDFC\uDDFF])|\uD83C\uDDE7(?:\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEF\uDDF1-\uDDF4\uDDF6-\uDDF9\uDDFB\uDDFC\uDDFE\uDDFF])|[#\*0-9]\uFE0F\u20E3|\uD83C\uDDF1(?:\uD83C[\uDDE6-\uDDE8\uDDEE\uDDF0\uDDF7-\uDDFB\uDDFE])|\uD83C\uDDE6(?:\uD83C[\uDDE8-\uDDEC\uDDEE\uDDF1\uDDF2\uDDF4\uDDF6-\uDDFA\uDDFC\uDDFD\uDDFF])|\uD83C\uDDF7(?:\uD83C[\uDDEA\uDDF4\uDDF8\uDDFA\uDDFC])|\uD83C\uDDFB(?:\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDEE\uDDF3\uDDFA])|\uD83C\uDDFE(?:\uD83C[\uDDEA\uDDF9])|(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDD6-\uDDDD])(?:\uD83C[\uDFFB-\uDFFF])|(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)(?:\uD83C[\uDFFB-\uDFFF])|(?:[\u261D\u270A-\u270D]|\uD83C[\uDF85\uDFC2\uDFC7]|\uD83D[\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC70\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDCAA\uDD74\uDD7A\uDD90\uDD95\uDD96\uDE4C\uDE4F\uDEC0\uDECC]|\uD83E[\uDD18-\uDD1C\uDD1E\uDD1F\uDD30-\uDD36\uDDB5\uDDB6\uDDD1-\uDDD5])(?:\uD83C[\uDFFB-\uDFFF])|(?:[\u231A\u231B\u23E9-\u23EC\u23F0\u23F3\u25FD\u25FE\u2614\u2615\u2648-\u2653\u267F\u2693\u26A1\u26AA\u26AB\u26BD\u26BE\u26C4\u26C5\u26CE\u26D4\u26EA\u26F2\u26F3\u26F5\u26FA\u26FD\u2705\u270A\u270B\u2728\u274C\u274E\u2753-\u2755\u2757\u2795-\u2797\u27B0\u27BF\u2B1B\u2B1C\u2B50\u2B55]|\uD83C[\uDC04\uDCCF\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF7C\uDF7E-\uDF93\uDFA0-\uDFCA\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF4\uDFF8-\uDFFF]|\uD83D[\uDC00-\uDC3E\uDC40\uDC42-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDD7A\uDD95\uDD96\uDDA4\uDDFB-\uDE4F\uDE80-\uDEC5\uDECC\uDED0-\uDED2\uDEEB\uDEEC\uDEF4-\uDEF9]|\uD83E[\uDD10-\uDD3A\uDD3C-\uDD3E\uDD40-\uDD45\uDD47-\uDD70\uDD73-\uDD76\uDD7A\uDD7C-\uDDA2\uDDB0-\uDDB9\uDDC0-\uDDC2\uDDD0-\uDDFF])|(?:[#\*0-9\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u261D\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692-\u2697\u2699\u269B\u269C\u26A0\u26A1\u26AA\u26AB\u26B0\u26B1\u26BD\u26BE\u26C4\u26C5\u26C8\u26CE\u26CF\u26D1\u26D3\u26D4\u26E9\u26EA\u26F0-\u26F5\u26F7-\u26FA\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721\u2728\u2733\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC04\uDCCF\uDD70\uDD71\uDD7E\uDD7F\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE02\uDE1A\uDE2F\uDE32-\uDE3A\uDE50\uDE51\uDF00-\uDF21\uDF24-\uDF93\uDF96\uDF97\uDF99-\uDF9B\uDF9E-\uDFF0\uDFF3-\uDFF5\uDFF7-\uDFFF]|\uD83D[\uDC00-\uDCFD\uDCFF-\uDD3D\uDD49-\uDD4E\uDD50-\uDD67\uDD6F\uDD70\uDD73-\uDD7A\uDD87\uDD8A-\uDD8D\uDD90\uDD95\uDD96\uDDA4\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA-\uDE4F\uDE80-\uDEC5\uDECB-\uDED2\uDEE0-\uDEE5\uDEE9\uDEEB\uDEEC\uDEF0\uDEF3-\uDEF9]|\uD83E[\uDD10-\uDD3A\uDD3C-\uDD3E\uDD40-\uDD45\uDD47-\uDD70\uDD73-\uDD76\uDD7A\uDD7C-\uDDA2\uDDB0-\uDDB9\uDDC0-\uDDC2\uDDD0-\uDDFF])\uFE0F|(?:[\u261D\u26F9\u270A-\u270D]|\uD83C[\uDF85\uDFC2-\uDFC4\uDFC7\uDFCA-\uDFCC]|\uD83D[\uDC42\uDC43\uDC46-\uDC50\uDC66-\uDC69\uDC6E\uDC70-\uDC78\uDC7C\uDC81-\uDC83\uDC85-\uDC87\uDCAA\uDD74\uDD75\uDD7A\uDD90\uDD95\uDD96\uDE45-\uDE47\uDE4B-\uDE4F\uDEA3\uDEB4-\uDEB6\uDEC0\uDECC]|\uD83E[\uDD18-\uDD1C\uDD1E\uDD1F\uDD26\uDD30-\uDD39\uDD3D\uDD3E\uDDB5\uDDB6\uDDB8\uDDB9\uDDD1-\uDDDD])/g;
+    return /\uD83C\uDFF4\uDB40\uDC67\uDB40\uDC62(?:\uDB40\uDC65\uDB40\uDC6E\uDB40\uDC67|\uDB40\uDC73\uDB40\uDC63\uDB40\uDC74|\uDB40\uDC77\uDB40\uDC6C\uDB40\uDC73)\uDB40\uDC7F|\uD83D\uDC68(?:\uD83C\uDFFC\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68\uD83C\uDFFB|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFF\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFE])|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFE\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFD])|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFD\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB\uDFFC])|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\u200D(?:\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83D\uDC68|(?:\uD83D[\uDC68\uDC69])\u200D(?:\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67]))|\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67])|(?:\uD83D[\uDC68\uDC69])\u200D(?:\uD83D[\uDC66\uDC67])|[\u2695\u2696\u2708]\uFE0F|\uD83D[\uDC66\uDC67]|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|(?:\uD83C\uDFFB\u200D[\u2695\u2696\u2708]|\uD83C\uDFFF\u200D[\u2695\u2696\u2708]|\uD83C\uDFFE\u200D[\u2695\u2696\u2708]|\uD83C\uDFFD\u200D[\u2695\u2696\u2708]|\uD83C\uDFFC\u200D[\u2695\u2696\u2708])\uFE0F|\uD83C\uDFFB\u200D(?:\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C[\uDFFB-\uDFFF])|(?:\uD83E\uDDD1\uD83C\uDFFB\u200D\uD83E\uDD1D\u200D\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFC\u200D\uD83E\uDD1D\u200D\uD83D\uDC69)\uD83C\uDFFB|\uD83E\uDDD1(?:\uD83C\uDFFF\u200D\uD83E\uDD1D\u200D\uD83E\uDDD1(?:\uD83C[\uDFFB-\uDFFF])|\u200D\uD83E\uDD1D\u200D\uD83E\uDDD1)|(?:\uD83E\uDDD1\uD83C\uDFFE\u200D\uD83E\uDD1D\u200D\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFF\u200D\uD83E\uDD1D\u200D(?:\uD83D[\uDC68\uDC69]))(?:\uD83C[\uDFFB-\uDFFE])|(?:\uD83E\uDDD1\uD83C\uDFFC\u200D\uD83E\uDD1D\u200D\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFD\u200D\uD83E\uDD1D\u200D\uD83D\uDC69)(?:\uD83C[\uDFFB\uDFFC])|\uD83D\uDC69(?:\uD83C\uDFFE\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB-\uDFFD\uDFFF])|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFC\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB\uDFFD-\uDFFF])|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFB\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFC-\uDFFF])|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFD\u200D(?:\uD83E\uDD1D\u200D\uD83D\uDC68(?:\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\u200D(?:\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D(?:\uD83D[\uDC68\uDC69])|\uD83D[\uDC68\uDC69])|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD])|\uD83C\uDFFF\u200D(?:\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E[\uDDAF-\uDDB3\uDDBC\uDDBD]))|\uD83D\uDC69\u200D\uD83D\uDC69\u200D(?:\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67]))|(?:\uD83E\uDDD1\uD83C\uDFFD\u200D\uD83E\uDD1D\u200D\uD83E\uDDD1|\uD83D\uDC69\uD83C\uDFFE\u200D\uD83E\uDD1D\u200D\uD83D\uDC69)(?:\uD83C[\uDFFB-\uDFFD])|\uD83D\uDC69\u200D\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC69\u200D\uD83D\uDC69\u200D(?:\uD83D[\uDC66\uDC67])|(?:\uD83D\uDC41\uFE0F\u200D\uD83D\uDDE8|\uD83D\uDC69(?:\uD83C\uDFFF\u200D[\u2695\u2696\u2708]|\uD83C\uDFFE\u200D[\u2695\u2696\u2708]|\uD83C\uDFFC\u200D[\u2695\u2696\u2708]|\uD83C\uDFFB\u200D[\u2695\u2696\u2708]|\uD83C\uDFFD\u200D[\u2695\u2696\u2708]|\u200D[\u2695\u2696\u2708])|(?:(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)\uFE0F|\uD83D\uDC6F|\uD83E[\uDD3C\uDDDE\uDDDF])\u200D[\u2640\u2642]|(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)(?:\uD83C[\uDFFB-\uDFFF])\u200D[\u2640\u2642]|(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD6-\uDDDD])(?:(?:\uD83C[\uDFFB-\uDFFF])\u200D[\u2640\u2642]|\u200D[\u2640\u2642])|\uD83C\uDFF4\u200D\u2620)\uFE0F|\uD83D\uDC69\u200D\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67])|\uD83C\uDFF3\uFE0F\u200D\uD83C\uDF08|\uD83D\uDC15\u200D\uD83E\uDDBA|\uD83D\uDC69\u200D\uD83D\uDC66|\uD83D\uDC69\u200D\uD83D\uDC67|\uD83C\uDDFD\uD83C\uDDF0|\uD83C\uDDF4\uD83C\uDDF2|\uD83C\uDDF6\uD83C\uDDE6|[#\*0-9]\uFE0F\u20E3|\uD83C\uDDE7(?:\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEF\uDDF1-\uDDF4\uDDF6-\uDDF9\uDDFB\uDDFC\uDDFE\uDDFF])|\uD83C\uDDF9(?:\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDED\uDDEF-\uDDF4\uDDF7\uDDF9\uDDFB\uDDFC\uDDFF])|\uD83C\uDDEA(?:\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDED\uDDF7-\uDDFA])|\uD83E\uDDD1(?:\uD83C[\uDFFB-\uDFFF])|\uD83C\uDDF7(?:\uD83C[\uDDEA\uDDF4\uDDF8\uDDFA\uDDFC])|\uD83D\uDC69(?:\uD83C[\uDFFB-\uDFFF])|\uD83C\uDDF2(?:\uD83C[\uDDE6\uDDE8-\uDDED\uDDF0-\uDDFF])|\uD83C\uDDE6(?:\uD83C[\uDDE8-\uDDEC\uDDEE\uDDF1\uDDF2\uDDF4\uDDF6-\uDDFA\uDDFC\uDDFD\uDDFF])|\uD83C\uDDF0(?:\uD83C[\uDDEA\uDDEC-\uDDEE\uDDF2\uDDF3\uDDF5\uDDF7\uDDFC\uDDFE\uDDFF])|\uD83C\uDDED(?:\uD83C[\uDDF0\uDDF2\uDDF3\uDDF7\uDDF9\uDDFA])|\uD83C\uDDE9(?:\uD83C[\uDDEA\uDDEC\uDDEF\uDDF0\uDDF2\uDDF4\uDDFF])|\uD83C\uDDFE(?:\uD83C[\uDDEA\uDDF9])|\uD83C\uDDEC(?:\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEE\uDDF1-\uDDF3\uDDF5-\uDDFA\uDDFC\uDDFE])|\uD83C\uDDF8(?:\uD83C[\uDDE6-\uDDEA\uDDEC-\uDDF4\uDDF7-\uDDF9\uDDFB\uDDFD-\uDDFF])|\uD83C\uDDEB(?:\uD83C[\uDDEE-\uDDF0\uDDF2\uDDF4\uDDF7])|\uD83C\uDDF5(?:\uD83C[\uDDE6\uDDEA-\uDDED\uDDF0-\uDDF3\uDDF7-\uDDF9\uDDFC\uDDFE])|\uD83C\uDDFB(?:\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDEE\uDDF3\uDDFA])|\uD83C\uDDF3(?:\uD83C[\uDDE6\uDDE8\uDDEA-\uDDEC\uDDEE\uDDF1\uDDF4\uDDF5\uDDF7\uDDFA\uDDFF])|\uD83C\uDDE8(?:\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDEE\uDDF0-\uDDF5\uDDF7\uDDFA-\uDDFF])|\uD83C\uDDF1(?:\uD83C[\uDDE6-\uDDE8\uDDEE\uDDF0\uDDF7-\uDDFB\uDDFE])|\uD83C\uDDFF(?:\uD83C[\uDDE6\uDDF2\uDDFC])|\uD83C\uDDFC(?:\uD83C[\uDDEB\uDDF8])|\uD83C\uDDFA(?:\uD83C[\uDDE6\uDDEC\uDDF2\uDDF3\uDDF8\uDDFE\uDDFF])|\uD83C\uDDEE(?:\uD83C[\uDDE8-\uDDEA\uDDF1-\uDDF4\uDDF6-\uDDF9])|\uD83C\uDDEF(?:\uD83C[\uDDEA\uDDF2\uDDF4\uDDF5])|(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD-\uDDCF\uDDD6-\uDDDD])(?:\uD83C[\uDFFB-\uDFFF])|(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)(?:\uD83C[\uDFFB-\uDFFF])|(?:[\u261D\u270A-\u270D]|\uD83C[\uDF85\uDFC2\uDFC7]|\uD83D[\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC6B-\uDC6D\uDC70\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDCAA\uDD74\uDD7A\uDD90\uDD95\uDD96\uDE4C\uDE4F\uDEC0\uDECC]|\uD83E[\uDD0F\uDD18-\uDD1C\uDD1E\uDD1F\uDD30-\uDD36\uDDB5\uDDB6\uDDBB\uDDD2-\uDDD5])(?:\uD83C[\uDFFB-\uDFFF])|(?:[\u231A\u231B\u23E9-\u23EC\u23F0\u23F3\u25FD\u25FE\u2614\u2615\u2648-\u2653\u267F\u2693\u26A1\u26AA\u26AB\u26BD\u26BE\u26C4\u26C5\u26CE\u26D4\u26EA\u26F2\u26F3\u26F5\u26FA\u26FD\u2705\u270A\u270B\u2728\u274C\u274E\u2753-\u2755\u2757\u2795-\u2797\u27B0\u27BF\u2B1B\u2B1C\u2B50\u2B55]|\uD83C[\uDC04\uDCCF\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF7C\uDF7E-\uDF93\uDFA0-\uDFCA\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF4\uDFF8-\uDFFF]|\uD83D[\uDC00-\uDC3E\uDC40\uDC42-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDD7A\uDD95\uDD96\uDDA4\uDDFB-\uDE4F\uDE80-\uDEC5\uDECC\uDED0-\uDED2\uDED5\uDEEB\uDEEC\uDEF4-\uDEFA\uDFE0-\uDFEB]|\uD83E[\uDD0D-\uDD3A\uDD3C-\uDD45\uDD47-\uDD71\uDD73-\uDD76\uDD7A-\uDDA2\uDDA5-\uDDAA\uDDAE-\uDDCA\uDDCD-\uDDFF\uDE70-\uDE73\uDE78-\uDE7A\uDE80-\uDE82\uDE90-\uDE95])|(?:[#\*0-9\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u261D\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692-\u2697\u2699\u269B\u269C\u26A0\u26A1\u26AA\u26AB\u26B0\u26B1\u26BD\u26BE\u26C4\u26C5\u26C8\u26CE\u26CF\u26D1\u26D3\u26D4\u26E9\u26EA\u26F0-\u26F5\u26F7-\u26FA\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721\u2728\u2733\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC04\uDCCF\uDD70\uDD71\uDD7E\uDD7F\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE02\uDE1A\uDE2F\uDE32-\uDE3A\uDE50\uDE51\uDF00-\uDF21\uDF24-\uDF93\uDF96\uDF97\uDF99-\uDF9B\uDF9E-\uDFF0\uDFF3-\uDFF5\uDFF7-\uDFFF]|\uD83D[\uDC00-\uDCFD\uDCFF-\uDD3D\uDD49-\uDD4E\uDD50-\uDD67\uDD6F\uDD70\uDD73-\uDD7A\uDD87\uDD8A-\uDD8D\uDD90\uDD95\uDD96\uDDA4\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA-\uDE4F\uDE80-\uDEC5\uDECB-\uDED2\uDED5\uDEE0-\uDEE5\uDEE9\uDEEB\uDEEC\uDEF0\uDEF3-\uDEFA\uDFE0-\uDFEB]|\uD83E[\uDD0D-\uDD3A\uDD3C-\uDD45\uDD47-\uDD71\uDD73-\uDD76\uDD7A-\uDDA2\uDDA5-\uDDAA\uDDAE-\uDDCA\uDDCD-\uDDFF\uDE70-\uDE73\uDE78-\uDE7A\uDE80-\uDE82\uDE90-\uDE95])\uFE0F|(?:[\u261D\u26F9\u270A-\u270D]|\uD83C[\uDF85\uDFC2-\uDFC4\uDFC7\uDFCA-\uDFCC]|\uD83D[\uDC42\uDC43\uDC46-\uDC50\uDC66-\uDC78\uDC7C\uDC81-\uDC83\uDC85-\uDC87\uDC8F\uDC91\uDCAA\uDD74\uDD75\uDD7A\uDD90\uDD95\uDD96\uDE45-\uDE47\uDE4B-\uDE4F\uDEA3\uDEB4-\uDEB6\uDEC0\uDECC]|\uD83E[\uDD0F\uDD18-\uDD1F\uDD26\uDD30-\uDD39\uDD3C-\uDD3E\uDDB5\uDDB6\uDDB8\uDDB9\uDDBB\uDDCD-\uDDCF\uDDD1-\uDDDD])/g;
   };
 
-  var emojiRegex$1 = emojiRegex();
+  var stringWidth = function stringWidth(string) {
+    string = string.replace(emojiRegex(), '  ');
 
-  var stringWidth = function stringWidth(input) {
-    input = input.replace(emojiRegex$1, '  ');
-
-    if (typeof input !== 'string' || input.length === 0) {
+    if (typeof string !== 'string' || string.length === 0) {
       return 0;
     }
 
-    input = stripAnsi_1(input);
+    string = stripAnsi_1(string);
     var width = 0;
 
-    for (var i = 0; i < input.length; i++) {
-      var code = input.codePointAt(i); // Ignore control characters
+    for (var i = 0; i < string.length; i++) {
+      var code = string.codePointAt(i); // Ignore control characters
 
       if (code <= 0x1F || code >= 0x7F && code <= 0x9F) {
         continue;
@@ -12526,11 +12532,16 @@
         i++;
       }
 
-      width += isFullwidthCodePoint(code) ? 2 : 1;
+      width += isFullwidthCodePoint_1(code) ? 2 : 1;
     }
 
     return width;
   };
+
+  var stringWidth_1 = stringWidth; // TODO: remove this in the next major version
+
+  var default_1$3 = stringWidth;
+  stringWidth_1.default = default_1$3;
 
   var notAsciiRegex = /[^\x20-\x7F]/;
 
@@ -12854,6 +12865,7 @@
         return true;
 
       case "MemberExpression":
+      case "OptionalMemberExpression":
         return startsWithNoLookaheadToken(node.object, forbidFunctionClassAndDoExpr);
 
       case "TaggedTemplateExpression":
@@ -12865,6 +12877,7 @@
         return startsWithNoLookaheadToken(node.tag, forbidFunctionClassAndDoExpr);
 
       case "CallExpression":
+      case "OptionalCallExpression":
         if (node.callee.type === "FunctionExpression") {
           // IIFEs are always already parenthesized
           return false;
@@ -13094,7 +13107,7 @@
       return text.length;
     }
 
-    return stringWidth(text);
+    return stringWidth_1(text);
   }
 
   function hasIgnoreComment(path) {
@@ -13838,8 +13851,6 @@
             }
 
             break;
-
-          default:
         }
       }
     }
@@ -15774,6 +15785,7 @@
   ];
 
   var htmlTagNames = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     'default': index
   });
 
@@ -17207,10 +17219,7 @@
     singleQuote: commonOptions.singleQuote
   };
 
-  var createLanguage = function createLanguage(linguistData, _ref) {
-    var extend = _ref.extend,
-        override = _ref.override,
-        exclude = _ref.exclude;
+  var createLanguage = function createLanguage(linguistData, transform) {
     var language = {};
 
     for (var key in linguistData) {
@@ -17218,29 +17227,7 @@
       language[newKey] = linguistData[key];
     }
 
-    if (extend) {
-      for (var _key in extend) {
-        language[_key] = (language[_key] || []).concat(extend[_key]);
-      }
-    }
-
-    if (exclude) {
-      var _loop = function _loop(_key2) {
-        language[_key2] = (language[_key2] || []).filter(function (value) {
-          return (exclude[_key2] || []).indexOf(value) === -1;
-        });
-      };
-
-      for (var _key2 in exclude) {
-        _loop(_key2);
-      }
-    }
-
-    for (var _key3 in override) {
-      language[_key3] = override[_key3];
-    }
-
-    return language;
+    return transform(language);
   };
 
   var name$1 = "CSS";
@@ -17267,6 +17254,7 @@
   };
 
   var CSS$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$1,
     type: type,
     tmScope: tmScope,
@@ -17299,6 +17287,7 @@
   };
 
   var PostCSS$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$2,
     type: type$1,
     tmScope: tmScope$1,
@@ -17333,6 +17322,7 @@
   };
 
   var Less$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$3,
     type: type$2,
     group: group$3,
@@ -17369,6 +17359,7 @@
   };
 
   var SCSS$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$4,
     type: type$3,
     tmScope: tmScope$3,
@@ -17389,33 +17380,31 @@
 
   var require$$3 = getCjsExportFromNamespace(SCSS$1);
 
-  var languages = [createLanguage(require$$0$2, {
-    override: {
+  var languages = [createLanguage(require$$0$2, function (data) {
+    return Object.assign(data, {
       since: "1.4.0",
       parsers: ["css"],
       vscodeLanguageIds: ["css"]
-    }
-  }), createLanguage(require$$1, {
-    override: {
+    });
+  }), createLanguage(require$$1, function (data) {
+    return Object.assign(data, {
       since: "1.4.0",
       parsers: ["css"],
-      vscodeLanguageIds: ["postcss"]
-    },
-    extend: {
-      extensions: [".postcss"]
-    }
-  }), createLanguage(require$$2, {
-    override: {
+      vscodeLanguageIds: ["postcss"],
+      extensions: data.extensions.concat(".postcss")
+    });
+  }), createLanguage(require$$2, function (data) {
+    return Object.assign(data, {
       since: "1.4.0",
       parsers: ["less"],
       vscodeLanguageIds: ["less"]
-    }
-  }), createLanguage(require$$3, {
-    override: {
+    });
+  }), createLanguage(require$$3, function (data) {
+    return Object.assign(data, {
       since: "1.4.0",
       parsers: ["scss"],
       vscodeLanguageIds: ["scss"]
-    }
+    });
   })];
   var printers = {
     postcss: printerPostcss
@@ -17778,6 +17767,7 @@
   };
 
   var GraphQL$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$5,
     type: type$4,
     extensions: extensions$4,
@@ -17789,12 +17779,12 @@
 
   var require$$0$3 = getCjsExportFromNamespace(GraphQL$1);
 
-  var languages$1 = [createLanguage(require$$0$3, {
-    override: {
+  var languages$1 = [createLanguage(require$$0$3, function (data) {
+    return Object.assign(data, {
       since: "1.5.0",
       parsers: ["graphql"],
       vscodeLanguageIds: ["graphql"]
-    }
+    });
   })];
   var printers$1 = {
     graphql: printerGraphql
@@ -17827,12 +17817,12 @@
       var isWhitespace = isWhitespaceNode(childNode);
 
       if (isWhitespace && isLastNodeInMultiNodeList) {
-        return concat$7([print(childPath, options, print)]);
-      } else if (isFirstNode || isPreviousNodeOfSomeType(childPath, ["ElementNode", "CommentStatement", "MustacheCommentStatement", "BlockStatement"])) {
+        return print(childPath, options, print);
+      } else if (isFirstNode) {
         return concat$7([softline$3, print(childPath, options, print)]);
       }
 
-      return concat$7([print(childPath, options, print)]);
+      return print(childPath, options, print);
     }, "children"));
   }
 
@@ -17849,7 +17839,7 @@
       case "Program":
       case "Template":
         {
-          return group$6(join$4(softline$3, path.map(print, "body").filter(function (text) {
+          return group$6(concat$7(path.map(print, "body").filter(function (text) {
             return text !== "";
           })));
         }
@@ -17860,7 +17850,10 @@
           var isLocal = n.tag.indexOf(".") !== -1;
           var isGlimmerComponent = tagFirstChar.toUpperCase() === tagFirstChar || isLocal;
           var hasChildren = n.children.length > 0;
-          var isVoid = isGlimmerComponent && !hasChildren || voidTags.indexOf(n.tag) !== -1;
+          var hasNonWhitespaceChildren = n.children.some(function (n) {
+            return !isWhitespaceNode(n);
+          });
+          var isVoid = isGlimmerComponent && (!hasChildren || !hasNonWhitespaceChildren) || voidTags.indexOf(n.tag) !== -1;
           var closeTagForNoBreak = isVoid ? concat$7([" />", softline$3]) : ">";
           var closeTagForBreak = isVoid ? "/>" : ">";
 
@@ -17868,7 +17861,8 @@
             return indent$4(concat$7([n.attributes.length ? line$3 : "", join$4(line$3, path.map(print, "attributes")), n.modifiers.length ? line$3 : "", join$4(line$3, path.map(print, "modifiers")), n.comments.length ? line$3 : "", join$4(line$3, path.map(print, "comments"))]));
           };
 
-          return concat$7([group$6(concat$7(["<", n.tag, _getParams(path, print), n.blockParams.length ? " as |".concat(n.blockParams.join(" "), "|") : "", ifBreak$3(softline$3, ""), ifBreak$3(closeTagForBreak, closeTagForNoBreak)])), group$6(concat$7([indent$4(printChildren(path, options, print)), ifBreak$3(hasChildren ? hardline$6 : "", ""), !isVoid ? concat$7(["</", n.tag, ">"]) : ""]))]);
+          var nextNode = getNextNode(path);
+          return concat$7([group$6(concat$7(["<", n.tag, _getParams(path, print), n.blockParams.length ? " as |".concat(n.blockParams.join(" "), "|") : "", ifBreak$3(softline$3, ""), ifBreak$3(closeTagForBreak, closeTagForNoBreak)])), !isVoid ? group$6(concat$7([hasNonWhitespaceChildren ? indent$4(printChildren(path, options, print)) : "", ifBreak$3(hasChildren ? hardline$6 : "", ""), concat$7(["</", n.tag, ">"])])) : "", nextNode && nextNode.type === "ElementNode" ? hardline$6 : ""]);
         }
 
       case "BlockStatement":
@@ -17886,10 +17880,11 @@
             return concat$7([concat$7(["{{else ", printPathParams(path, print), "}}"]), indent$4(concat$7([hardline$6, path.call(print, "program")]))]);
           }
 
-          var hasNonWhitespaceChildren = n.program.body.some(function (n) {
+          var _hasNonWhitespaceChildren = n.program.body.some(function (n) {
             return !isWhitespaceNode(n);
           });
-          return concat$7([printOpenBlock(path, print), group$6(concat$7([indent$4(concat$7([softline$3, path.call(print, "program")])), hasNonWhitespaceChildren ? hardline$6 : softline$3, printCloseBlock(path, print)]))]);
+
+          return concat$7([printOpenBlock(path, print), group$6(concat$7([indent$4(concat$7([softline$3, path.call(print, "program")])), _hasNonWhitespaceChildren ? hardline$6 : softline$3, printCloseBlock(path, print)]))]);
         }
 
       case "ElementModifierStatement":
@@ -17919,7 +17914,7 @@
           }
 
           var value = path.call(print, "value");
-          var quotedValue = isText ? printStringLiteral(value, options) : value;
+          var quotedValue = isText ? printStringLiteral(value.parts.join(), options) : value;
           return concat$7([n.name, "=", quotedValue]);
         }
 
@@ -17944,19 +17939,37 @@
 
       case "TextNode":
         {
+          var maxLineBreaksToPreserve = 2;
+          var isFirstElement = !getPreviousNode(path);
+          var isLastElement = !getNextNode(path);
           var isWhitespaceOnly = !/\S/.test(n.chars);
+          var lineBreaksCount = countNewLines(n.chars);
+          var hasBlockParent = path.getParentNode(0).type === "Block";
+          var hasElementParent = path.getParentNode(0).type === "ElementNode";
+          var hasTemplateParent = path.getParentNode(0).type === "Template";
+          var leadingLineBreaksCount = countLeadingNewLines(n.chars);
+          var trailingLineBreaksCount = countTrailingNewLines(n.chars);
 
-          if (isWhitespaceOnly && isPreviousNodeOfSomeType(path, ["MustacheStatement", "TextNode"])) {
-            return " ";
+          if ((isFirstElement || isLastElement) && isWhitespaceOnly && (hasBlockParent || hasElementParent || hasTemplateParent)) {
+            return "";
+          }
+
+          if (isWhitespaceOnly && lineBreaksCount) {
+            leadingLineBreaksCount = Math.min(lineBreaksCount, maxLineBreaksToPreserve);
+            trailingLineBreaksCount = 0;
+          } else {
+            if (isNextNodeOfType(path, "ElementNode") || isNextNodeOfType(path, "BlockStatement")) {
+              trailingLineBreaksCount = Math.max(trailingLineBreaksCount, 1);
+            }
+
+            if (isPreviousNodeOfSomeType(path, ["ElementNode"]) || isPreviousNodeOfSomeType(path, ["BlockStatement"])) {
+              leadingLineBreaksCount = Math.max(leadingLineBreaksCount, 1);
+            }
           }
 
           var leadingSpace = "";
-          var trailingSpace = "";
-
-          if (isNextNodeOfType(path, "MustacheStatement")) {
-            trailingSpace = " ";
-          } // preserve a space inside of an attribute node where whitespace present, when next to mustache statement.
-
+          var trailingSpace = ""; // preserve a space inside of an attribute node where whitespace present,
+          // when next to mustache statement.
 
           var inAttrNode = path.stack.indexOf("attributes") >= 0;
 
@@ -17988,9 +18001,27 @@
                 }
               }
             }
+          } else {
+            if (trailingLineBreaksCount === 0 && isNextNodeOfType(path, "MustacheStatement")) {
+              trailingSpace = " ";
+            }
+
+            if (leadingLineBreaksCount === 0 && isPreviousNodeOfSomeType(path, ["MustacheStatement"])) {
+              leadingSpace = " ";
+            }
+
+            if (isFirstElement) {
+              leadingLineBreaksCount = 0;
+              leadingSpace = "";
+            }
+
+            if (isLastElement) {
+              trailingLineBreaksCount = 0;
+              trailingSpace = "";
+            }
           }
 
-          return n.chars.replace(/^\s+/, leadingSpace).replace(/\s+$/, trailingSpace);
+          return concat$7([].concat(_toConsumableArray(generateHardlines(leadingLineBreaksCount, maxLineBreaksToPreserve)), [n.chars.replace(/^[\s ]+/g, leadingSpace).replace(/[\s ]+$/, trailingSpace)], _toConsumableArray(generateHardlines(trailingLineBreaksCount, maxLineBreaksToPreserve))).filter(Boolean));
         }
 
       case "MustacheCommentStatement":
@@ -18136,7 +18167,7 @@
   function getPreviousNode(path) {
     var node = path.getValue();
     var parentNode = path.getParentNode(0);
-    var children = parentNode.children;
+    var children = parentNode.children || parentNode.body;
 
     if (children) {
       var nodeIndex = children.indexOf(node);
@@ -18151,7 +18182,7 @@
   function getNextNode(path) {
     var node = path.getValue();
     var parentNode = path.getParentNode(0);
-    var children = parentNode.children;
+    var children = parentNode.children || parentNode.body;
 
     if (children) {
       var nodeIndex = children.indexOf(node);
@@ -18181,7 +18212,8 @@
   }
 
   function clean$2(ast, newObj) {
-    delete newObj.loc; // (Glimmer/HTML) ignore TextNode whitespace
+    delete newObj.loc;
+    delete newObj.selfClosing; // (Glimmer/HTML) ignore TextNode whitespace
 
     if (ast.type === "TextNode") {
       if (ast.chars.replace(/\s+/, "") === "") {
@@ -18190,6 +18222,32 @@
 
       newObj.chars = ast.chars.replace(/^\s+/, "").replace(/\s+$/, "");
     }
+  }
+
+  function countNewLines(string) {
+    /* istanbul ignore next */
+    string = typeof string === "string" ? string : "";
+    return string.split("\n").length - 1;
+  }
+
+  function countLeadingNewLines(string) {
+    /* istanbul ignore next */
+    string = typeof string === "string" ? string : "";
+    var newLines = (string.match(/^([^\S\r\n]*[\r\n])+/g) || [])[0] || "";
+    return countNewLines(newLines);
+  }
+
+  function countTrailingNewLines(string) {
+    /* istanbul ignore next */
+    string = typeof string === "string" ? string : "";
+    var newLines = (string.match(/([\r\n][^\S\r\n]*)+$/g) || [])[0] || "";
+    return countNewLines(newLines);
+  }
+
+  function generateHardlines() {
+    var number = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var max = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    return new Array(Math.min(number, max)).fill(hardline$6);
   }
 
   var printerGlimmer = {
@@ -18223,6 +18281,7 @@
   };
 
   var Handlebars$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$6,
     type: type$5,
     group: group$7,
@@ -18236,13 +18295,13 @@
 
   var require$$0$4 = getCjsExportFromNamespace(Handlebars$1);
 
-  var languages$2 = [createLanguage(require$$0$4, {
-    override: {
+  var languages$2 = [createLanguage(require$$0$4, function (data) {
+    return Object.assign(data, {
       since: null,
       // unreleased
       parsers: ["glimmer"],
       vscodeLanguageIds: ["handlebars"]
-    }
+    });
   })];
   var printers$2 = {
     glimmer: printerGlimmer
@@ -18939,6 +18998,7 @@
   	"*": [
   	"accesskey",
   	"autocapitalize",
+  	"autofocus",
   	"class",
   	"contenteditable",
   	"dir",
@@ -19044,6 +19104,7 @@
   };
 
   var htmlElementAttributes = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     a: a,
     abbr: abbr,
     applet: applet,
@@ -21301,6 +21362,12 @@
        */
 
       var ngExpressionBindingPatterns = ["^\\[.+\\]$", "^bind(on)?-"];
+      /**
+       *     i18n="longDescription"
+       *     i18n-attr="longDescription"
+       */
+
+      var ngI18nPatterns = ["^i18n(-.+)?$"];
 
       if (isKeyMatched(ngStatementBindingPatterns)) {
         return printMaybeHug(ngTextToDoc(getValue(), {
@@ -21312,6 +21379,10 @@
         return printMaybeHug(ngTextToDoc(getValue(), {
           parser: "__ng_binding"
         }));
+      }
+
+      if (isKeyMatched(ngI18nPatterns)) {
+        return printExpand(fill$3(getTextValueParts(node, getValue())));
       }
 
       if (isKeyMatched(ngDirectiveBindingPatterns)) {
@@ -21421,6 +21492,7 @@
   };
 
   var HTML$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$7,
     type: type$6,
     tmScope: tmScope$6,
@@ -21454,6 +21526,7 @@
   };
 
   var Vue$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$8,
     type: type$7,
     color: color$2,
@@ -21468,40 +21541,38 @@
 
   var require$$1$1 = getCjsExportFromNamespace(Vue$1);
 
-  var languages$3 = [createLanguage(require$$0$5, {
-    override: {
+  var languages$3 = [createLanguage(require$$0$5, function (data) {
+    return Object.assign(data, {
       name: "Angular",
       since: "1.15.0",
       parsers: ["angular"],
       vscodeLanguageIds: ["html"],
       extensions: [".component.html"],
       filenames: []
-    }
-  }), createLanguage(require$$0$5, {
-    override: {
+    });
+  }), createLanguage(require$$0$5, function (data) {
+    return Object.assign(data, {
       since: "1.15.0",
       parsers: ["html"],
-      vscodeLanguageIds: ["html"]
-    },
-    extend: {
-      extensions: [".mjml" // MJML is considered XML in Linguist but it should be formatted as HTML
-      ]
-    }
-  }), createLanguage(require$$0$5, {
-    override: {
+      vscodeLanguageIds: ["html"],
+      extensions: data.extensions.concat([".mjml" // MJML is considered XML in Linguist but it should be formatted as HTML
+      ])
+    });
+  }), createLanguage(require$$0$5, function (data) {
+    return Object.assign(data, {
       name: "Lightning Web Components",
       since: "1.17.0",
       parsers: ["lwc"],
       vscodeLanguageIds: ["html"],
       extensions: [],
       filenames: []
-    }
-  }), createLanguage(require$$1$1, {
-    override: {
+    });
+  }), createLanguage(require$$1$1, function (data) {
+    return Object.assign(data, {
       since: "1.10.0",
       parsers: ["vue"],
       vscodeLanguageIds: ["vue"]
-    }
+    });
   })];
   var printers$3 = {
     html: printerHtml
@@ -21794,7 +21865,7 @@
     // i.e. a function without any argument.
 
 
-    if (enclosingNode && ((enclosingNode.type === "FunctionDeclaration" || enclosingNode.type === "FunctionExpression" || enclosingNode.type === "ArrowFunctionExpression" || enclosingNode.type === "ClassMethod" || enclosingNode.type === "ObjectMethod") && enclosingNode.params.length === 0 || (enclosingNode.type === "CallExpression" || enclosingNode.type === "NewExpression") && enclosingNode.arguments.length === 0)) {
+    if (enclosingNode && ((enclosingNode.type === "FunctionDeclaration" || enclosingNode.type === "FunctionExpression" || enclosingNode.type === "ArrowFunctionExpression" || enclosingNode.type === "ClassMethod" || enclosingNode.type === "ObjectMethod") && enclosingNode.params.length === 0 || (enclosingNode.type === "CallExpression" || enclosingNode.type === "OptionalCallExpression" || enclosingNode.type === "NewExpression") && enclosingNode.arguments.length === 0)) {
       addDanglingComment$2(enclosingNode, comment);
       return true;
     }
@@ -21867,7 +21938,7 @@
   }
 
   function handleCallExpressionComments(precedingNode, enclosingNode, comment) {
-    if (enclosingNode && enclosingNode.type === "CallExpression" && precedingNode && enclosingNode.callee === precedingNode && enclosingNode.arguments.length > 0) {
+    if (enclosingNode && (enclosingNode.type === "CallExpression" || enclosingNode.type === "OptionalCallExpression") && precedingNode && enclosingNode.callee === precedingNode && enclosingNode.arguments.length > 0) {
       addLeadingComment$2(enclosingNode.arguments[0], comment);
       return true;
     }
@@ -23011,18 +23082,22 @@
       } // Allow `a.b.c`, `a.b[c]`, and `this.x.y`
 
 
-      if ((expr.type === "MemberExpression" || expr.type === "OptionalMemberExpression") && (expr.property.type === "Identifier" || expr.property.type === "Literal")) {
-        var ancestor = expr;
+      if (expr.type === "MemberExpression" || expr.type === "OptionalMemberExpression") {
+        var head = expr;
 
-        while (ancestor.type === "MemberExpression" || ancestor.type === "OptionalMemberExpression") {
-          ancestor = ancestor.object;
+        while (head.type === "MemberExpression" || head.type === "OptionalMemberExpression") {
+          if (head.property.type !== "Identifier" && head.property.type !== "Literal" && head.property.type !== "StringLiteral" && head.property.type !== "NumericLiteral") {
+            return false;
+          }
 
-          if (ancestor.comments) {
+          head = head.object;
+
+          if (head.comments) {
             return false;
           }
         }
 
-        if (ancestor.type === "Identifier" || ancestor.type === "ThisExpression") {
+        if (head.type === "Identifier" || head.type === "ThisExpression") {
           return true;
         }
 
@@ -23115,6 +23190,9 @@
 
           return false;
         }
+
+      case "TSIndexSignature":
+        return true;
 
       default:
         /* istanbul ignore next */
@@ -23754,14 +23832,16 @@
             return true;
 
           case "MemberExpression":
-            return name === "object" && parent.object === node;
+          case "OptionalMemberExpression":
+            return name === "object";
 
           case "TaggedTemplateExpression":
             return true;
 
           case "NewExpression":
           case "CallExpression":
-            return name === "callee" && parent.callee === node;
+          case "OptionalCallExpression":
+            return name === "callee";
 
           case "BinaryExpression":
             return parent.operator === "**" && name === "left";
@@ -23814,7 +23894,8 @@
 
           case "CallExpression":
           case "NewExpression":
-            return name === "callee" && parent.callee === node;
+          case "OptionalCallExpression":
+            return name === "callee";
 
           case "ClassExpression":
           case "ClassDeclaration":
@@ -23835,7 +23916,7 @@
 
           case "MemberExpression":
           case "OptionalMemberExpression":
-            return name === "object" && parent.object === node;
+            return name === "object";
 
           case "AssignmentExpression":
             return parent.left === node && (node.type === "TSTypeAssertion" || node.type === "TSAsExpression");
@@ -23930,15 +24011,16 @@
           case "TSAsExpression":
           case "TSNonNullExpression":
           case "BindExpression":
-          case "OptionalMemberExpression":
             return true;
 
           case "MemberExpression":
-            return parent.object === node;
+          case "OptionalMemberExpression":
+            return name === "object";
 
           case "NewExpression":
           case "CallExpression":
-            return parent.callee === node;
+          case "OptionalCallExpression":
+            return name === "callee";
 
           case "ConditionalExpression":
             return parent.test === node;
@@ -24051,18 +24133,19 @@
           case "TypeCastExpression":
           case "TSAsExpression":
           case "TSNonNullExpression":
-          case "OptionalMemberExpression":
             return true;
 
           case "NewExpression":
           case "CallExpression":
-            return name === "callee" && parent.callee === node;
+          case "OptionalCallExpression":
+            return name === "callee";
 
           case "ConditionalExpression":
             return name === "test" && parent.test === node;
 
           case "MemberExpression":
-            return name === "object" && parent.object === node;
+          case "OptionalMemberExpression":
+            return name === "object";
 
           default:
             return false;
@@ -24072,8 +24155,10 @@
         switch (parent.type) {
           case "NewExpression":
           case "CallExpression":
+          case "OptionalCallExpression":
+            // Not always necessary, but it's clearer to the reader if IIFEs are wrapped in parentheses.
+            // Is necessary if it is `expression` of `ExpressionStatement`.
             return name === "callee";
-          // Not strictly necessary, but it's clearer to the reader if IIFEs are wrapped in parentheses.
 
           case "TaggedTemplateExpression":
             return true;
@@ -24085,13 +24170,13 @@
 
       case "ArrowFunctionExpression":
         switch (parent.type) {
-          case "CallExpression":
-            return name === "callee";
-
           case "NewExpression":
+          case "CallExpression":
+          case "OptionalCallExpression":
             return name === "callee";
 
           case "MemberExpression":
+          case "OptionalMemberExpression":
             return name === "object";
 
           case "TSAsExpression":
@@ -24121,21 +24206,29 @@
         }
 
       case "OptionalMemberExpression":
-        return parent.type === "MemberExpression";
+      case "OptionalCallExpression":
+        if ((parent.type === "MemberExpression" && name === "object" || parent.type === "CallExpression" && name === "callee") && // workaround for https://github.com/facebook/flow/issues/8159
+        !(options.parser === "flow" && parent.range[0] === node.range[0])) {
+          return true;
+        }
+
+      // fallthrough
 
       case "CallExpression":
       case "MemberExpression":
       case "TaggedTemplateExpression":
       case "TSNonNullExpression":
-        if ((parent.type === "BindExpression" || parent.type === "NewExpression") && name === "callee" && parent.callee === node) {
+        if ((parent.type === "BindExpression" || parent.type === "NewExpression") && name === "callee") {
           var object = node;
 
           while (object) {
             switch (object.type) {
               case "CallExpression":
+              case "OptionalCallExpression":
                 return true;
 
               case "MemberExpression":
+              case "OptionalMemberExpression":
               case "BindExpression":
                 object = object.object;
                 break;
@@ -24159,11 +24252,7 @@
         return false;
 
       case "BindExpression":
-        if (parent.type === "BindExpression" && name === "callee" && parent.callee === node || parent.type === "MemberExpression" && name === "object" && parent.object === node || parent.type === "NewExpression" && name === "callee" && parent.callee === node) {
-          return true;
-        }
-
-        return false;
+        return (parent.type === "BindExpression" || parent.type === "NewExpression") && name === "callee" || (parent.type === "MemberExpression" || parent.type === "OptionalMemberExpression") && name === "object";
 
       case "NGPipeExpression":
         if (parent.type === "NGRoot" || parent.type === "NGMicrosyntaxExpression" || parent.type === "ObjectProperty" || parent.type === "ArrayExpression" || (parent.type === "CallExpression" || parent.type === "OptionalCallExpression") && parent.arguments[name] === node || parent.type === "NGPipeExpression" && name === "right" || parent.type === "MemberExpression" && name === "property" || parent.type === "AssignmentExpression") {
@@ -24174,7 +24263,7 @@
 
       case "JSXFragment":
       case "JSXElement":
-        return parent.type !== "ArrayExpression" && parent.type !== "ArrowFunctionExpression" && parent.type !== "AssignmentExpression" && parent.type !== "AssignmentPattern" && parent.type !== "BinaryExpression" && parent.type !== "CallExpression" && parent.type !== "ConditionalExpression" && parent.type !== "ExpressionStatement" && parent.type !== "JsExpressionRoot" && parent.type !== "JSXAttribute" && parent.type !== "JSXElement" && parent.type !== "JSXExpressionContainer" && parent.type !== "JSXFragment" && parent.type !== "LogicalExpression" && parent.type !== "ObjectProperty" && parent.type !== "Property" && parent.type !== "ReturnStatement" && parent.type !== "TypeCastExpression" && parent.type !== "VariableDeclarator";
+        return name === "callee" || parent.type !== "ArrayExpression" && parent.type !== "ArrowFunctionExpression" && parent.type !== "AssignmentExpression" && parent.type !== "AssignmentPattern" && parent.type !== "BinaryExpression" && parent.type !== "CallExpression" && parent.type !== "ConditionalExpression" && parent.type !== "ExpressionStatement" && parent.type !== "JsExpressionRoot" && parent.type !== "JSXAttribute" && parent.type !== "JSXElement" && parent.type !== "JSXExpressionContainer" && parent.type !== "JSXFragment" && parent.type !== "LogicalExpression" && parent.type !== "ObjectProperty" && parent.type !== "OptionalCallExpression" && parent.type !== "Property" && parent.type !== "ReturnStatement" && parent.type !== "TypeCastExpression" && parent.type !== "VariableDeclarator";
     }
 
     return false;
@@ -24634,7 +24723,7 @@
     // ).call()
 
 
-    var breakClosingParen = !jsxMode && (parent.type === "MemberExpression" || parent.type === "OptionalMemberExpression") && !parent.computed;
+    var breakClosingParen = !jsxMode && (parent.type === "MemberExpression" || parent.type === "OptionalMemberExpression" || parent.type === "NGPipeExpression" && parent.left === node && operatorOptions.breakNested) && !parent.computed;
     return maybeGroup(concat$d([].concat(function (testDoc) {
       return (
         /**
@@ -24779,13 +24868,13 @@
           //   ).call()
 
 
-          if (_parent.type === "CallExpression" && _parent.callee === n || _parent.type === "UnaryExpression" || (_parent.type === "MemberExpression" || _parent.type === "OptionalMemberExpression") && !_parent.computed) {
+          if ((_parent.type === "CallExpression" || _parent.type === "OptionalCallExpression") && _parent.callee === n || _parent.type === "UnaryExpression" || (_parent.type === "MemberExpression" || _parent.type === "OptionalMemberExpression") && !_parent.computed) {
             return group$b(concat$d([indent$7(concat$d([softline$6, concat$d(_parts)])), softline$6]));
           } // Avoid indenting sub-expressions in some cases where the first sub-expression is already
           // indented accordingly. We should indent sub-expressions where the first case isn't indented.
 
 
-          var shouldNotIndent = _parent.type === "ReturnStatement" || _parent.type === "JSXExpressionContainer" && parentParent.type === "JSXAttribute" || n.type !== "NGPipeExpression" && (_parent.type === "NGRoot" && options.parser === "__ng_binding" || _parent.type === "NGMicrosyntaxExpression" && parentParent.type === "NGMicrosyntax" && parentParent.body.length === 1) || n === _parent.body && _parent.type === "ArrowFunctionExpression" || n !== _parent.body && _parent.type === "ForStatement" || _parent.type === "ConditionalExpression" && parentParent.type !== "ReturnStatement" && parentParent.type !== "CallExpression";
+          var shouldNotIndent = _parent.type === "ReturnStatement" || _parent.type === "JSXExpressionContainer" && parentParent.type === "JSXAttribute" || n.type !== "NGPipeExpression" && (_parent.type === "NGRoot" && options.parser === "__ng_binding" || _parent.type === "NGMicrosyntaxExpression" && parentParent.type === "NGMicrosyntax" && parentParent.body.length === 1) || n === _parent.body && _parent.type === "ArrowFunctionExpression" || n !== _parent.body && _parent.type === "ForStatement" || _parent.type === "ConditionalExpression" && parentParent.type !== "ReturnStatement" && parentParent.type !== "CallExpression" && parentParent.type !== "OptionalCallExpression";
           var shouldIndentIfInlining = _parent.type === "AssignmentExpression" || _parent.type === "VariableDeclarator" || _parent.type === "ClassProperty" || _parent.type === "TSAbstractClassProperty" || _parent.type === "ClassPrivateProperty" || _parent.type === "ObjectProperty" || _parent.type === "Property";
           var samePrecedenceSubExpression = isBinaryish$1(n.left) && shouldFlatten$1(n.operator, n.left.operator);
 
@@ -25370,9 +25459,29 @@
           // we already check for an empty array just above so we are safe
 
           var needsForcedTrailingComma = canHaveTrailingComma && _lastElem === null;
+
+          var _shouldBreak = n.elements.length > 1 && n.elements.every(function (element, i, elements) {
+            var elementType = element && element.type;
+
+            if (elementType !== "ArrayExpression" && elementType !== "ObjectExpression") {
+              return false;
+            }
+
+            var nextElement = elements[i + 1];
+
+            if (nextElement && elementType !== nextElement.type) {
+              return false;
+            }
+
+            var itemsKey = elementType === "ArrayExpression" ? "elements" : "properties";
+            return element[itemsKey] && element[itemsKey].length > 1;
+          });
+
           parts.push(group$b(concat$d(["[", indent$7(concat$d([softline$6, printArrayItems(path, options, "elements", print)])), needsForcedTrailingComma ? "," : "", ifBreak$6(canHaveTrailingComma && !needsForcedTrailingComma && shouldPrintComma$1(options) ? "," : ""), comments.printDanglingComments(path, options,
           /* sameIndent */
-          true), softline$6, "]"])));
+          true), softline$6, "]"]), {
+            shouldBreak: _shouldBreak
+          }));
         }
 
         parts.push(printOptionalToken(path), printTypeAnnotation(path, options, print));
@@ -25818,14 +25927,14 @@
           !nameHasComments || _n.attributes.length) && !lastAttrHasTrailingComments; // We should print the opening element expanded if any prop value is a
           // string literal with newlines
 
-          var _shouldBreak = _n.attributes && _n.attributes.some(function (attr) {
+          var _shouldBreak2 = _n.attributes && _n.attributes.some(function (attr) {
             return attr.value && isStringLiteral$1(attr.value) && attr.value.value.includes("\n");
           });
 
           return group$b(concat$d(["<", path.call(print, "name"), path.call(print, "typeParameters"), concat$d([indent$7(concat$d(path.map(function (attr) {
             return concat$d([line$7, print(attr)]);
           }, "attributes"))), _n.selfClosing ? line$7 : bracketSameLine ? ">" : softline$6]), _n.selfClosing ? "/>" : bracketSameLine ? "" : ">"]), {
-            shouldBreak: _shouldBreak
+            shouldBreak: _shouldBreak2
           });
         }
 
@@ -25872,6 +25981,10 @@
 
           if (n.accessibility) {
             parts.push(n.accessibility + " ");
+          }
+
+          if (n.declare) {
+            parts.push("declare ");
           }
 
           if (n.static) {
@@ -26578,15 +26691,7 @@
         }
 
       case "TSTypePredicate":
-        {
-          if (n.asserts && !n.typeAnnotation) {
-            return concat$d(["asserts ", path.call(print, "parameterName")]);
-          } else if (n.asserts && n.typeAnnotation) {
-            return concat$d(["asserts ", path.call(print, "parameterName"), " is ", path.call(print, "typeAnnotation")]);
-          }
-
-          return concat$d([path.call(print, "parameterName"), " is ", path.call(print, "typeAnnotation")]);
-        }
+        return concat$d([n.asserts ? "asserts " : "", path.call(print, "parameterName"), n.typeAnnotation ? concat$d([" is ", path.call(print, "typeAnnotation")]) : ""]);
 
       case "TSNonNullExpression":
         return concat$d([path.call(print, "expression"), "!"]);
@@ -26630,12 +26735,12 @@
 
       case "TSMappedType":
         {
-          var _shouldBreak2 = hasNewlineInRange$2(options.originalText, options.locStart(n), options.locEnd(n));
+          var _shouldBreak3 = hasNewlineInRange$2(options.originalText, options.locStart(n), options.locEnd(n));
 
           return group$b(concat$d(["{", indent$7(concat$d([options.bracketSpacing ? line$7 : softline$6, n.readonly ? concat$d([getTypeScriptMappedTypeModifier$1(n.readonly, "readonly"), " "]) : "", printTypeScriptModifiers(path, options, print), path.call(print, "typeParameter"), n.optional ? getTypeScriptMappedTypeModifier$1(n.optional, "?") : "", ": ", path.call(print, "typeAnnotation"), ifBreak$6(semi, "")])), comments.printDanglingComments(path, options,
           /* sameIndent */
           true), options.bracketSpacing ? line$7 : softline$6, "}"]), {
-            shouldBreak: _shouldBreak2
+            shouldBreak: _shouldBreak3
           });
         }
 
@@ -27091,15 +27196,21 @@
     // );
 
 
-    function hasEmptyLineInObjectArgInArrowFunction(arg) {
-      return arg && arg.type === "ArrowFunctionExpression" && arg.params && arg.params.some(function (param) {
-        return param.type && param.type === "ObjectPattern" && param.properties && param.properties.some(function (property, i, properties) {
-          return i < properties.length - 1 && isNextLineEmpty$4(options.originalText, property, options);
-        });
-      });
+    function shouldBreakForArrowFunctionInArguments(arg, argPath) {
+      if (!arg || arg.type !== "ArrowFunctionExpression" || !arg.body || arg.body.type !== "BlockStatement" || !arg.params || arg.params.length < 1) {
+        return false;
+      }
+
+      var shouldBreak = false;
+      argPath.each(function (paramPath) {
+        var printed = concat$d([print(paramPath)]);
+        shouldBreak = shouldBreak || willBreak$1(printed);
+      }, "params");
+      return shouldBreak;
     }
 
     var anyArgEmptyLine = false;
+    var shouldBreakForArrowFunction = false;
     var hasEmptyLineFollowingFirstArg = false;
     var lastArgIndex = args.length - 1;
     var printedArguments = path.map(function (argPath, index) {
@@ -27117,7 +27228,7 @@
         parts.push(",", line$7);
       }
 
-      anyArgEmptyLine = hasEmptyLineInObjectArgInArrowFunction(arg);
+      shouldBreakForArrowFunction = shouldBreakForArrowFunctionInArguments(arg, argPath);
       return concat$d(parts);
     }, "arguments");
     var maybeTrailingComma = // Dynamic imports cannot have trailing commas
@@ -27137,7 +27248,7 @@
     var shouldGroupLast = shouldGroupLastArg(args);
 
     if (shouldGroupFirst || shouldGroupLast) {
-      var shouldBreak = (shouldGroupFirst ? printedArguments.slice(1).some(willBreak$1) : printedArguments.slice(0, -1).some(willBreak$1)) || anyArgEmptyLine; // We want to print the last argument with a special flag
+      var shouldBreak = (shouldGroupFirst ? printedArguments.slice(1).some(willBreak$1) : printedArguments.slice(0, -1).some(willBreak$1)) || anyArgEmptyLine || shouldBreakForArrowFunction; // We want to print the last argument with a special flag
 
       var printedExpanded;
       var i = 0;
@@ -28166,7 +28277,7 @@
       return elem;
     }
 
-    var shouldBreak = matchAncestorTypes$1(path, ["ArrowFunctionExpression", "CallExpression", "JSXExpressionContainer"]);
+    var shouldBreak = matchAncestorTypes$1(path, ["ArrowFunctionExpression", "CallExpression", "JSXExpressionContainer"]) || matchAncestorTypes$1(path, ["ArrowFunctionExpression", "OptionalCallExpression", "JSXExpressionContainer"]);
     var needsParens = needsParens_1(path, options);
     return group$b(concat$d([needsParens ? "" : ifBreak$6("("), indent$7(concat$d([softline$6, elem])), softline$6, needsParens ? "" : ifBreak$6(")")]), {
       shouldBreak: shouldBreak
@@ -28376,7 +28487,7 @@
   ) {
     var node = path.getValue();
     var parent = path.getParentNode();
-    return (node && (isJSXNode$1(node) || hasFlowShorthandAnnotationComment$2(node) || parent && parent.type === "CallExpression" && (hasFlowAnnotationComment$1(node.leadingComments) || hasFlowAnnotationComment$1(node.trailingComments))) || parent && (parent.type === "JSXSpreadAttribute" || parent.type === "JSXSpreadChild" || parent.type === "UnionTypeAnnotation" || parent.type === "TSUnionType" || (parent.type === "ClassDeclaration" || parent.type === "ClassExpression") && parent.superClass === node)) && !hasIgnoreComment$4(path);
+    return (node && (isJSXNode$1(node) || hasFlowShorthandAnnotationComment$2(node) || parent && (parent.type === "CallExpression" || parent.type === "OptionalCallExpression") && (hasFlowAnnotationComment$1(node.leadingComments) || hasFlowAnnotationComment$1(node.trailingComments))) || parent && (parent.type === "JSXSpreadAttribute" || parent.type === "JSXSpreadChild" || parent.type === "UnionTypeAnnotation" || parent.type === "TSUnionType" || (parent.type === "ClassDeclaration" || parent.type === "ClassExpression") && parent.superClass === node)) && !hasIgnoreComment$4(path);
   }
 
   function canAttachComment$1(node) {
@@ -28682,6 +28793,7 @@
   };
 
   var JavaScript$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$9,
     type: type$8,
     tmScope: tmScope$8,
@@ -28721,6 +28833,7 @@
   };
 
   var JSX$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$a,
     type: type$9,
     group: group$c,
@@ -28766,6 +28879,7 @@
   };
 
   var TypeScript$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$b,
     type: type$a,
     color: color$4,
@@ -28804,6 +28918,7 @@
   };
 
   var TSX$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$c,
     type: type$b,
     group: group$d,
@@ -28865,6 +28980,7 @@
   };
 
   var _JSON$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$d,
     type: type$c,
     tmScope: tmScope$c,
@@ -28929,6 +29045,7 @@
   };
 
   var JSON_with_Comments$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$e,
     type: type$d,
     group: group$e,
@@ -28965,6 +29082,7 @@
   };
 
   var JSON5$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$f,
     type: type$e,
     extensions: extensions$e,
@@ -28990,17 +29108,15 @@
 
   var require$$6 = getCjsExportFromNamespace(JSON5$1);
 
-  var languages$4 = [createLanguage(require$$0$6, {
-    override: {
+  var languages$4 = [createLanguage(require$$0$6, function (data) {
+    return Object.assign(data, {
       since: "0.0.0",
       parsers: ["babel", "flow"],
-      vscodeLanguageIds: ["javascript"]
-    },
-    extend: {
-      interpreters: ["nodejs"]
-    }
-  }), createLanguage(require$$0$6, {
-    override: {
+      vscodeLanguageIds: ["javascript"],
+      interpreters: data.interpreters.concat(["nodejs"])
+    });
+  }), createLanguage(require$$0$6, function (data) {
+    return Object.assign(data, {
       name: "Flow",
       since: "0.0.0",
       parsers: ["babel", "flow"],
@@ -29008,27 +29124,27 @@
       aliases: [],
       filenames: [],
       extensions: [".js.flow"]
-    }
-  }), createLanguage(require$$1$2, {
-    override: {
+    });
+  }), createLanguage(require$$1$2, function (data) {
+    return Object.assign(data, {
       since: "0.0.0",
       parsers: ["babel", "flow"],
       vscodeLanguageIds: ["javascriptreact"]
-    }
-  }), createLanguage(require$$2$1, {
-    override: {
+    });
+  }), createLanguage(require$$2$1, function (data) {
+    return Object.assign(data, {
       since: "1.4.0",
       parsers: ["typescript"],
       vscodeLanguageIds: ["typescript"]
-    }
-  }), createLanguage(require$$3$1, {
-    override: {
+    });
+  }), createLanguage(require$$3$1, function (data) {
+    return Object.assign(data, {
       since: "1.4.0",
       parsers: ["typescript"],
       vscodeLanguageIds: ["typescriptreact"]
-    }
-  }), createLanguage(require$$4, {
-    override: {
+    });
+  }), createLanguage(require$$4, function (data) {
+    return Object.assign(data, {
       name: "JSON.stringify",
       since: "1.13.0",
       parsers: ["json-stringify"],
@@ -29036,31 +29152,27 @@
       extensions: [],
       // .json file defaults to json instead of json-stringify
       filenames: ["package.json", "package-lock.json", "composer.json"]
-    }
-  }), createLanguage(require$$4, {
-    override: {
+    });
+  }), createLanguage(require$$4, function (data) {
+    return Object.assign(data, {
       since: "1.5.0",
       parsers: ["json"],
-      vscodeLanguageIds: ["json"]
-    },
-    extend: {
-      filenames: [".prettierrc"]
-    }
-  }), createLanguage(require$$5, {
-    override: {
+      vscodeLanguageIds: ["json"],
+      filenames: data.filenames.concat([".prettierrc"])
+    });
+  }), createLanguage(require$$5, function (data) {
+    return Object.assign(data, {
       since: "1.5.0",
       parsers: ["json"],
-      vscodeLanguageIds: ["jsonc"]
-    },
-    extend: {
-      filenames: [".eslintrc"]
-    }
-  }), createLanguage(require$$6, {
-    override: {
+      vscodeLanguageIds: ["jsonc"],
+      filenames: data.filenames.concat([".eslintrc"])
+    });
+  }), createLanguage(require$$6, function (data) {
+    return Object.assign(data, {
       since: "1.13.0",
       parsers: ["json5"],
       vscodeLanguageIds: ["json5"]
-    }
+    });
   })];
   var printers$4 = {
     estree: printerEstree,
@@ -30112,10 +30224,6 @@
           }
 
           break;
-
-        default:
-          // do nothing
-          break;
       }
     });
     return printChildren$2(path, options, print, {
@@ -30427,6 +30535,7 @@
   };
 
   var Markdown$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$g,
     type: type$f,
     aliases: aliases$5,
@@ -30443,27 +30552,25 @@
 
   var require$$0$7 = getCjsExportFromNamespace(Markdown$1);
 
-  var languages$5 = [createLanguage(require$$0$7, {
-    override: {
+  var languages$5 = [createLanguage(require$$0$7, function (data) {
+    return Object.assign(data, {
       since: "1.8.0",
       parsers: ["remark"],
-      vscodeLanguageIds: ["markdown"]
-    },
-    extend: {
-      filenames: ["README"]
-    },
-    exclude: {
-      extensions: [".mdx"]
-    }
-  }), createLanguage(require$$0$7, {
-    override: {
+      vscodeLanguageIds: ["markdown"],
+      filenames: data.filenames.concat(["README"]),
+      extensions: data.extensions.filter(function (extension) {
+        return extension !== ".mdx";
+      })
+    });
+  }), createLanguage(require$$0$7, function (data) {
+    return Object.assign(data, {
       name: "MDX",
       since: "1.15.0",
       parsers: ["mdx"],
       vscodeLanguageIds: ["mdx"],
       filenames: [],
       extensions: [".mdx"]
-    }
+    });
   })];
   var printers$5 = {
     mdast: printerMarkdown
@@ -31270,6 +31377,7 @@
   };
 
   var YAML$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     name: name$h,
     type: type$g,
     tmScope: tmScope$g,
@@ -31285,12 +31393,12 @@
 
   var require$$0$8 = getCjsExportFromNamespace(YAML$1);
 
-  var languages$6 = [createLanguage(require$$0$8, {
-    override: {
+  var languages$6 = [createLanguage(require$$0$8, function (data) {
+    return Object.assign(data, {
       since: "1.14.0",
       parsers: ["yaml"],
       vscodeLanguageIds: ["yaml"]
-    }
+    });
   })];
   var languageYaml = {
     languages: languages$6,
@@ -31352,4 +31460,4 @@
 
   return standalone$1;
 
-}));
+})));

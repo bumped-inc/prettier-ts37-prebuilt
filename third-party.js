@@ -11,6 +11,42 @@ var module$1 = _interopDefault(require('module'));
 var fs = _interopDefault(require('fs'));
 var stream = _interopDefault(require('stream'));
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -31,6 +67,55 @@ function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
   return Constructor;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(source, true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(source).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
 }
 
 function _inherits(subClass, superClass) {
@@ -5175,30 +5260,28 @@ var pump = function pump() {
 
 var pump_1 = pump;
 
-var PassThrough = stream.PassThrough;
+var PassThroughStream = stream.PassThrough;
 
 var bufferStream = function bufferStream(options) {
-  options = Object.assign({}, options);
+  options = _objectSpread2({}, options);
   var _options = options,
       array = _options.array;
   var _options2 = options,
       encoding = _options2.encoding;
-  var buffer = encoding === 'buffer';
+  var isBuffer = encoding === 'buffer';
   var objectMode = false;
 
   if (array) {
-    objectMode = !(encoding || buffer);
+    objectMode = !(encoding || isBuffer);
   } else {
     encoding = encoding || 'utf8';
   }
 
-  if (buffer) {
+  if (isBuffer) {
     encoding = null;
   }
 
-  var len = 0;
-  var ret = [];
-  var stream = new PassThrough({
+  var stream = new PassThroughStream({
     objectMode
   });
 
@@ -5206,26 +5289,28 @@ var bufferStream = function bufferStream(options) {
     stream.setEncoding(encoding);
   }
 
+  var length = 0;
+  var chunks = [];
   stream.on('data', function (chunk) {
-    ret.push(chunk);
+    chunks.push(chunk);
 
     if (objectMode) {
-      len = ret.length;
+      length = chunks.length;
     } else {
-      len += chunk.length;
+      length += chunk.length;
     }
   });
 
   stream.getBufferedValue = function () {
     if (array) {
-      return ret;
+      return chunks;
     }
 
-    return buffer ? Buffer.concat(ret, len) : ret.join('');
+    return isBuffer ? Buffer.concat(chunks, length) : chunks.join('');
   };
 
   stream.getBufferedLength = function () {
-    return len;
+    return length;
   };
 
   return stream;
@@ -5249,60 +5334,89 @@ function (_Error) {
   return MaxBufferError;
 }(_wrapNativeSuper(Error));
 
-function getStream(inputStream, options) {
-  if (!inputStream) {
-    return Promise.reject(new Error('Expected a stream'));
-  }
-
-  options = Object.assign({
-    maxBuffer: Infinity
-  }, options);
-  var _options = options,
-      maxBuffer = _options.maxBuffer;
-  var stream;
-  return new Promise(function (resolve, reject) {
-    var rejectPromise = function rejectPromise(error) {
-      if (error) {
-        // A null check
-        error.bufferedData = stream.getBufferedValue();
-      }
-
-      reject(error);
-    };
-
-    stream = pump_1(inputStream, bufferStream(options), function (error) {
-      if (error) {
-        rejectPromise(error);
-        return;
-      }
-
-      resolve();
-    });
-    stream.on('data', function () {
-      if (stream.getBufferedLength() > maxBuffer) {
-        rejectPromise(new MaxBufferError());
-      }
-    });
-  }).then(function () {
-    return stream.getBufferedValue();
-  });
+function getStream(_x, _x2) {
+  return _getStream.apply(this, arguments);
 }
 
-var getStream_1 = getStream;
+function _getStream() {
+  _getStream = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee(inputStream, options) {
+    var _options, maxBuffer, stream;
+
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (inputStream) {
+              _context.next = 2;
+              break;
+            }
+
+            return _context.abrupt("return", Promise.reject(new Error('Expected a stream')));
+
+          case 2:
+            options = _objectSpread2({
+              maxBuffer: Infinity
+            }, options);
+            _options = options, maxBuffer = _options.maxBuffer;
+            _context.next = 6;
+            return new Promise(function (resolve, reject) {
+              var rejectPromise = function rejectPromise(error) {
+                if (error) {
+                  // A null check
+                  error.bufferedData = stream.getBufferedValue();
+                }
+
+                reject(error);
+              };
+
+              stream = pump_1(inputStream, bufferStream(options), function (error) {
+                if (error) {
+                  rejectPromise(error);
+                  return;
+                }
+
+                resolve();
+              });
+              stream.on('data', function () {
+                if (stream.getBufferedLength() > maxBuffer) {
+                  rejectPromise(new MaxBufferError());
+                }
+              });
+            });
+
+          case 6:
+            return _context.abrupt("return", stream.getBufferedValue());
+
+          case 7:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _getStream.apply(this, arguments);
+}
+
+var getStream_1 = getStream; // TODO: Remove this for the next major release
+
+var default_1 = getStream;
 
 var buffer = function buffer(stream, options) {
-  return getStream(stream, Object.assign({}, options, {
+  return getStream(stream, _objectSpread2({}, options, {
     encoding: 'buffer'
   }));
 };
 
 var array = function array(stream, options) {
-  return getStream(stream, Object.assign({}, options, {
+  return getStream(stream, _objectSpread2({}, options, {
     array: true
   }));
 };
 
 var MaxBufferError_1 = MaxBufferError;
+getStream_1.default = default_1;
 getStream_1.buffer = buffer;
 getStream_1.array = array;
 getStream_1.MaxBufferError = MaxBufferError_1;
@@ -5488,6 +5602,7 @@ var vendors = [
 ];
 
 var vendors$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
   'default': vendors
 });
 
